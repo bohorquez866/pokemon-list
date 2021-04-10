@@ -1,0 +1,52 @@
+.home {
+    max-width: 57rem;
+    @extend .is-flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    @include mq($bpSmall) {
+        padding-left: 3rem;
+        padding-right: 3rem;
+    }
+    @extend .align-center;
+    justify-content: center;
+    align-items: center;
+    & img {
+        @extend .align-center;
+        margin-bottom: 6rem;
+    }
+    & h1 {
+        text-align: center;
+        @extend .has-text-centered;
+        margin-bottom: 3rem;
+        font-size: 3.6rem;
+        color: $black;
+    }
+    & p {
+        margin-bottom: 5rem;
+        @extend .has-text-centered;
+        font-size: 1.8rem;
+        line-height: 150%;
+    }
+}
+
+.loading {
+    animation: rotating 1s ease .5s infinite normal;
+    width: fit-content;
+    margin: 0 auto;
+    position: absolute;
+    left: calc(50% - 4.4rem);
+    top: calc(50% - 4.4rem);
+}
+
+@keyframes rotating {
+    0% {
+        transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(180deg);
+    }
+    100% {
+        transform: rotate(365deg);
+    }
+}

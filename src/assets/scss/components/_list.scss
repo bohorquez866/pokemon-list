@@ -1,0 +1,113 @@
+.list {
+    width: 100%;
+    min-height: 100vh;
+    & .searchbar {
+        padding-top: 3.5rem;
+        .search-wrap {
+            @include mq($bpSmall) {
+                margin-left: 3rem;
+                margin-right: 3rem;
+            }
+            position: relative;
+            & img {
+                position: absolute;
+                top: 35%;
+                left: 1.5rem;
+            }
+            & .search-input {
+                all: unset;
+                height: 5rem;
+                display: block;
+                box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.04);
+                border-radius: 5px;
+                max-width: 100%;
+                width: -webkit-fill-available;
+                background-color: $white;
+                padding-left: 4.3rem;
+                &:placeholder-shown {
+                    color: #BFBFBF;
+                    font-size: 16px;
+                }
+            }
+        }
+    }
+    &--error {
+        margin-top: 5rem;
+        @extend .home;
+        min-height: unset;
+        align-items: unset;
+        & h1 {
+            margin-bottom: 1rem;
+        }
+        & p {
+            margin-bottom: 2.5rem;
+        }
+    }
+    &--success {
+        max-height: 60vh;
+        margin-top: 4rem;
+        @include mq($bpSmall) {
+            margin-left: 3rem;
+            margin-right: 3rem;
+        }
+        & ul {
+            overflow: scroll;
+            max-height: 71vh;
+            &::-webkit-scrollbar {
+                display: none;
+            }
+        }
+        & li {
+            @extend .is-flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            background-color: $white;
+            border-radius: 5px;
+            padding: 8px 1rem 8px 2rem;
+            font-size: 2.2rem;
+            color: $grey-dark;
+            &:not(:last-of-type) {
+                margin-bottom: 1rem;
+            }
+            &,
+            & figure {
+                @extend .is-flex;
+                align-items: center;
+            }
+            figure {
+                justify-content: center;
+                background-color: #f5f5f5;
+                width: 4.4rem;
+                height: 4.4rem;
+                border-radius: 100%;
+            }
+        }
+    }
+}
+
+.lower-menu {
+    position: absolute;
+    box-shadow: 0px -5px 4px rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: $white;
+    @include mq($bpSmall) {
+        padding-left: 3rem;
+        padding-right: 3rem;
+    }
+    & .btns {
+        padding: 1.8rem 0;
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        max-width: 57rem;
+        & img {
+            margin-right: 1rem;
+        }
+    }
+}

@@ -5,18 +5,12 @@ import { createStore } from "vuex";
 
 import homeApp from "./components/homeApp.vue";
 import listView from "./components/list.vue";
-import listViewFavorite from "./components/listViewSuccess.vue";
-import favoriteView from "./components/listFavoriteView.vue";
-import modalView from "./components/modal-pokemon.vue";
 
 const router = createRouter({
     history: createWebHistory(),
     routes: [
         { path: "/", component: homeApp },
         { path: "/list", component: listView },
-        { path: "/list", component: listViewFavorite },
-        { path: "/modal", component: modalView },
-        { path: "/list/favorite", component: favoriteView },
     ],
 });
 
@@ -27,6 +21,10 @@ const store = createStore({
             isFavorite: [],
             pokemons: [],
             favoritePokemons: [],
+            search: "",
+            loaded: false,
+            favoritePage: false,
+            allPage: true,
         };
     },
 });

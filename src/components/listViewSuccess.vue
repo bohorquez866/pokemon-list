@@ -23,11 +23,12 @@
 
     <article @loadstart="fetchData" v-if="filterPokemon" class="list--success">
       <ul>
-        <li v-for="pokemon in filterPokemon" :key="pokemon.id">
+        <li v-for="pokemon in filterPokemon" :key="pokemon">
           {{ pokemon.name }}
-          <figure>
+
+          <figure @click="addFavorite(pokemon.name)" class="rate-star">
             <img
-              v-if="!isFavorite"
+              v-if="!$store.state.isFavorite.includes(pokemon.name)"
               src="../assets/img/grey-star.svg"
               alt="grey start"
             />
@@ -47,15 +48,15 @@
             <p>All</p>
           </button>
 
-          <button class="btn btn-secondary">
+          <router-link to="/list/favorite" class="btn btn-secondary">
             <img src="../assets/img/white-star.svg" alt="list Icon" />
             <p>Favorites</p>
-          </button>
+          </router-link>
         </div>
       </footer>
     </article>
 
-    <empty-search-view v-if="filterPokemon" />
+    <empty-search-view v-if="filterTest <= 0" />
   </div>
 </template>
 
@@ -68,24 +69,45 @@ export default {
 
   data() {
     return {
-      isFavorite: true,
-      url: `https://pokeapi.co/api/v2/pokemon?offset=300&limit=160`,
+      url: ` https://pokeapi.co/api/v2/pokemon?offset=0&limit=151`,
       nextURL: "",
       pokemons: [],
       search: "",
-      loaded: this.$store.state.isLoaded,
+      loaded: false,
+      empty: false,
     };
   },
 
   computed: {
+    filterTest() {
+      return this.filterPokemon.length;
+    },
+    validateFavorite() {
+      return this.$store.state.pokemons.forEach((poke) => {
+        this.$store.state.isFavorite.includes(poke.name);
+      });
+    },
     filterPokemon() {
-      return this.pokemons.filter((poke) => {
+      return this.$store.state.pokemons.filter((poke) => {
         return poke.name.match(this.search);
       });
     },
   },
 
+  watch: {
+    filterError() {
+      this.filterPokemon.length <= 0 ? true : false;
+    },
+  },
+
   methods: {
+    addFavorite(pokemonName) {
+      this.$store.state.isFavorite.includes(pokemonName)
+        ? this.$store.state.isFavorite.pop(pokemonName)
+        : this.$store.state.isFavorite.push(pokemonName);
+      console.log(this.$store.state.isFavorite);
+    },
+
     fetchData() {
       let req = this.url;
       fetch(req)
@@ -95,8 +117,12 @@ export default {
           }
         })
         .then((data) => {
-          console.log(data);
-          data.results.forEach((pokemon) => this.pokemons.push(pokemon));
+          data.results.forEach((pokemon) =>
+            this.$store.state.pokemons.push(pokemon)
+          );
+          setTimeout(() => {
+            this.loaded = true;
+          }, 2000);
         })
         .catch((error) => {
           console.log(error);
@@ -106,13 +132,6 @@ export default {
 
   mounted() {
     this.fetchData();
-    document.onreadystatechange = () => {
-      if (document.readyState === "complete") {
-        this.loaded = true;
-      } else {
-        this.loaded = false;
-      }
-    };
   },
 };
 </script>

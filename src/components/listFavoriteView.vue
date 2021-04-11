@@ -21,20 +21,6 @@
         </figure>
       </li>
     </ul>
-
-    <footer class="lower-menu">
-      <div class="btns">
-        <button class="btn btn-secondary active">
-          <img src="../assets/img/list.svg" alt="list Icon" />
-          <p>All</p>
-        </button>
-
-        <button class="btn btn-secondary">
-          <img src="../assets/img/white-star.svg" alt="list Icon" />
-          <p>Favorites</p>
-        </button>
-      </div>
-    </footer>
   </article>
 </template>
 

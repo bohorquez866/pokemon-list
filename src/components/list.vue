@@ -13,7 +13,10 @@
       class="list--success"
     />
 
-    <favorite-page v-else-if="filterPokemon && $store.state.favoritePage" />
+    <favorite-page
+      v-else-if="$store.state.favoritePage"
+      class="list--success"
+    />
 
     <empty-search-view v-if="filterTest <= 0" />
 
@@ -77,12 +80,6 @@ export default {
       return this.$store.state.pokemons.filter((poke) => {
         return poke.name.match(this.$store.state.search);
       });
-    },
-  },
-
-  watch: {
-    filterError() {
-      this.filterPokemon.length <= 0 ? true : false;
     },
   },
 

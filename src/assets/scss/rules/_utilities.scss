@@ -74,6 +74,12 @@
         background-color: $red;
         color: $white;
         margin: 0 auto;
+        &:hover {
+            background-color: $red-2;
+        }
+        @include mq($bpSmall) {
+            padding: 1rem;
+        }
     }
     &-secondary {
         padding: 1.1rem 0;

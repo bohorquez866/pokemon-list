@@ -16,6 +16,9 @@
         width: 100%;
         background-color: $white;
         border-radius: 5px;
+        @include mq($bpSmall) {
+            margin: 0 3rem;
+        }
         & .modal-bg {
             position: relative;
             height: 100%;
@@ -31,6 +34,14 @@
                 height: 100%;
                 width: 100%;
             }
+            & .pokemon-picture {
+                position: absolute;
+                width: 16rem;
+                height: 16rem;
+                left: calc(67% - 18rem);
+                top: calc(100% - 18rem);
+                object-fit: contain;
+            }
         }
         & p {
             margin-right: 3rem;
@@ -41,10 +52,36 @@
                 margin-top: 1rem;
             }
         }
+        & .pokemon-name {
+            &:hover {
+                color: $red;
+            }
+        }
         & .share-button {
+            position: relative;
+            & .notification-copy {
+                position: absolute;
+                background-color: rgba(51, 48, 48, 0.274);
+                padding: 5px 1rem;
+                font-size: 1.5rem;
+                top: -2rem;
+                color: $grey-dark;
+                font-weight: bold;
+                left: 25%;
+                border-radius: 5rem;
+            }
+            & input {
+                all: unset;
+                display: none;
+                width: 0;
+                height: 0;
+            }
             @extend .is-flex;
             justify-content: space-between;
             margin: 2rem 3rem 2rem 3rem;
+            @include mq($bpSmall) {
+                margin: 2rem;
+            }
             & .btn {
                 margin: 0;
             }

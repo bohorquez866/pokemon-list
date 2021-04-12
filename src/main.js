@@ -29,6 +29,7 @@ const store = createStore({
             filterCheck: null,
             modalView: false,
             modalId: null,
+            copyAlert: null,
         };
     },
 });

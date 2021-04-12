@@ -96,7 +96,6 @@ export default {
       this.$store.state.isFavorite.includes(pokemonName)
         ? this.$store.state.isFavorite.pop(pokemonName)
         : this.$store.state.isFavorite.push(pokemonName);
-      console.log(this.$store.state.isFavorite);
     },
 
     fetchData() {
@@ -111,7 +110,7 @@ export default {
           data.results.forEach((pokemon) =>
             this.$store.state.pokemons.push(pokemon)
           );
-          console.log(data);
+
           setTimeout(() => {
             this.$store.state.loaded = true;
           }, 2000);

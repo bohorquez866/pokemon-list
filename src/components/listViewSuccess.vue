@@ -1,12 +1,10 @@
 <template>
   <article>
     <ul>
-      <li
-        @click="showModal(index, pokemon.id)"
-        v-for="(pokemon, index) in ultimateFilter"
-        :key="index"
-      >
-        <p>{{ pokemon.name }}</p>
+      <li v-for="(pokemon, index) in ultimateFilter" :key="index">
+        <p @click="showModal(index, pokemon.id++)" class="pokemon-name">
+          {{ pokemon.name }}
+        </p>
 
         <figure @click="addFavorite(pokemon.name)" class="rate-star">
           <img
@@ -28,14 +26,35 @@
               <span @click="hideModal"
                 ><img src="../assets/img/close.svg" alt=""
               /></span>
+              <img
+                :src="$store.state.modalData.sprite"
+                alt=""
+                class="pokemon-picture"
+              />
               <img src="../assets/img/modal-bg.svg" alt="" />
             </figure>
             <p><strong>Name: </strong> {{ $store.state.modalData.name }}</p>
-            <p><strong>Weight:</strong> {{}}</p>
-            <p><strong>Height:</strong> {{}}</p>
-            <p><strong>Types:</strong> {{}}</p>
+            <p><strong>Weight:</strong> {{ $store.state.modalData.weight }}</p>
+            <p><strong>Height:</strong> {{ $store.state.modalData.height }}</p>
+            <p>
+              <strong>Types:</strong>
+              <span
+                v-for="typeName in $store.state.modalData.types"
+                :key="typeName"
+              >
+                {{ ` ${typeName} ` }}
+              </span>
+            </p>
+
             <div class="share-button">
-              <button class="btn btn-primary">Share to my friends</button>
+              <div class="notification-copy" v-show="$store.state.copyAlert">
+                Pokemon Data copied to Clipboard
+              </div>
+              <input type="text" v-model="copiedText" />
+              <button @click="copyText" class="btn btn-primary">
+                Share to my friends
+              </button>
+
               <figure class="rate-star">
                 <img
                   v-if="!$store.state.isFavorite"
@@ -58,7 +77,15 @@
 
 <script>
 export default {
-  components: {},
+  data() {
+    return {
+      copiedText: `
+Name:  ${this.$store.state.modalData.name}
+Weight: ${this.$store.state.modalData.weight}
+Height: ${this.$store.state.modalData.height}
+types: ${this.copiedTypes}`,
+    };
+  },
   computed: {
     ultimateFilter() {
       if (this.$store.state.allPage) {
@@ -79,9 +106,28 @@ export default {
         return poke.name.match(this.$store.state.search);
       });
     },
+    copiedTypes() {
+      return this.$store.state.modalData.types.forEach((type) => {
+        return type.name;
+      });
+    },
   },
 
+  watch: {},
   methods: {
+    copyText() {
+      navigator.clipboard.writeText(`
+Name:  ${this.$store.state.modalData.name}
+Weight: ${this.$store.state.modalData.weight}
+Height: ${this.$store.state.modalData.height}
+types: ${Array.from(this.$store.state.modalData.types)}`);
+
+      setTimeout(() => {
+        this.$store.state.copyAlert = true;
+      }, 500);
+      this.$store.state.copyAlert = false;
+    },
+
     fetchModal(urlName) {
       let url = `https://pokeapi.co/api/v2/pokemon/${urlName}`;
       fetch(url)
@@ -91,30 +137,34 @@ export default {
           }
         })
         .then((data) => {
-          this.$store.state.modalData.push({
-            name: data.id,
+          let typesData = [];
+          let spriteImg = data.sprites.other.dream_world.front_default;
+
+          data.types.forEach((type) => {
+            typesData.push(type.type.name);
+          });
+
+          this.$store.state.modalData = {
+            id: data.id,
+            name: data.name,
             weight: data.weight,
             height: data.height,
-            types: data.types,
-          });
-          console.log(`Single Pokemon Data:`, data);
-          console.log(this.$store.state.modalData);
+            types: typesData,
+            sprite: spriteImg,
+          };
         })
         .catch((error) => {
           console.log(error);
         });
     },
-
     hideModal() {
       if (this.$store.state.modalView) this.$store.state.modalView = false;
     },
     showModal(id) {
-      this.fetchModal(id);
+      this.fetchModal(id + 1);
       this.$store.state.modalView = true;
       this.$store.state.modalId = id;
-      console.log(id);
     },
-
     addFavorite(pokemonName) {
       return this.$store.state.isFavorite.includes(pokemonName)
         ? this.$store.state.isFavorite.pop(pokemonName)

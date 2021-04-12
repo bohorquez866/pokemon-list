@@ -1,0 +1,21 @@
+$red: #f22539;
+$white: #fff;
+$black: #000;
+$bgC: #E5E5E5;
+$text-grey: #5E5E5E;
+$grey-dark: #353535;
+$font-primary: 'Lato',
+sans-serif;
+//Breakpoints$bpXLarge: 118.75em; //1900px
+@mixin mq($breakpoint) {
+    @media only screen and (max-width: $breakpoint) {
+        @content
+    }
+}
+
+$bpLarge: 94em; //1504px
+$bpBig: 84.37em; //1400
+$bpXMedium: 68.75em; //960px
+$bpMedium: 60em; //960px
+$bpSmall: 30em; //480px
+$bpXSmall: 21.875em; //350px

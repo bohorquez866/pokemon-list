@@ -47,6 +47,12 @@
             </p>
 
             <div class="share-button">
+              <div
+                class="notification-copy"
+                :class="{ active: $store.state.copyAlert }"
+              >
+                Pokemon Data copied to Clipboard
+              </div>
               <button class="btn btn-primary">Share to my friends</button>
               <figure class="rate-star">
                 <img
@@ -159,6 +165,7 @@ types: ${Array.from(this.$store.state.modalData.types)}`);
       });
     },
   },
+
   mounted() {
     this.filterFavoritePokemon();
   },

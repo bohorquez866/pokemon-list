@@ -47,7 +47,10 @@
             </p>
 
             <div class="share-button">
-              <div class="notification-copy" v-show="$store.state.copyAlert">
+              <div
+                class="notification-copy"
+                :class="{ active: $store.state.copyAlert }"
+              >
                 Pokemon Data copied to Clipboard
               </div>
               <input type="text" v-model="copiedText" />
@@ -113,7 +116,6 @@ types: ${this.copiedTypes}`,
     },
   },
 
-  watch: {},
   methods: {
     copyText() {
       navigator.clipboard.writeText(`
@@ -122,10 +124,15 @@ Weight: ${this.$store.state.modalData.weight}
 Height: ${this.$store.state.modalData.height}
 types: ${Array.from(this.$store.state.modalData.types)}`);
 
-      setTimeout(() => {
-        this.$store.state.copyAlert = true;
-      }, 500);
-      this.$store.state.copyAlert = false;
+      console.log(this.$store.state.copyAlert);
+      if (this.$store.state.copyAlert === null) {
+        setTimeout(() => {
+          return this.$store.state.copyAlert;
+        }, 500);
+      } else {
+        return !this.$store.state.copyAlert;
+      }
+      console.log(this.$store.state.copyAlert);
     },
 
     fetchModal(urlName) {

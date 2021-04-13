@@ -60,15 +60,19 @@
         & .share-button {
             position: relative;
             & .notification-copy {
+                display: none;
                 position: absolute;
                 background-color: rgba(51, 48, 48, 0.274);
                 padding: 5px 1rem;
                 font-size: 1.5rem;
                 top: -2rem;
-                color: $grey-dark;
+                color: $white;
                 font-weight: bold;
                 left: 25%;
                 border-radius: 5rem;
+                &.active {
+                    display: block;
+                }
             }
             & input {
                 all: unset;

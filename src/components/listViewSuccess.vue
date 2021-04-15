@@ -6,88 +6,30 @@
           {{ pokemon.name }}
         </p>
 
-        <figure @click="addFavorite(pokemon.name)" class="rate-star">
-          <img
-            v-if="!$store.state.isFavorite.includes(pokemon.name)"
-            src="../assets/img/grey-star.svg"
-            alt="grey start"
-          />
-          <img
-            v-else
-            src="../assets/img/gold-star.svg"
-            alt="favorite yellow star"
-          />
-        </figure>
-
-        <div class="modal" v-if="$store.state.modalView">
-          <article class="modal--content">
-            <div class="close"></div>
-            <figure class="modal-bg">
-              <span @click="hideModal"
-                ><img src="../assets/img/close.svg" alt=""
-              /></span>
-              <img
-                :src="$store.state.modalData.sprite"
-                alt=""
-                class="pokemon-picture"
-              />
-              <img src="../assets/img/modal-bg.svg" alt="" />
-            </figure>
-            <p><strong>Name: </strong> {{ $store.state.modalData.name }}</p>
-            <p><strong>Weight:</strong> {{ $store.state.modalData.weight }}</p>
-            <p><strong>Height:</strong> {{ $store.state.modalData.height }}</p>
-            <p>
-              <strong>Types:</strong>
-              <span
-                v-for="typeName in $store.state.modalData.types"
-                :key="typeName"
-              >
-                {{ ` ${typeName} ` }}
-              </span>
-            </p>
-
-            <div class="share-button">
-              <div
-                class="notification-copy"
-                :class="{ active: $store.state.copyAlert }"
-              >
-                Pokemon Data copied to Clipboard
-              </div>
-              <input type="text" v-model="copiedText" />
-              <button @click="copyText" class="btn btn-primary">
-                Share to my friends
-              </button>
-
-              <figure class="rate-star">
-                <img
-                  v-if="!$store.state.isFavorite"
-                  src="../assets/img/grey-star.svg"
-                  alt="grey start"
-                />
-                <img
-                  v-else
-                  src="../assets/img/gold-star.svg"
-                  alt="favorite yellow star"
-                />
-              </figure>
-            </div>
-          </article>
-        </div>
+        <favorite-star
+          @add-favorite="addFavorite(pokemon.name)"
+          :pokemon-name="pokemon.name"
+        />
+        <modal-view
+          @copy-text="copyText"
+          @hide-modal="hideModal"
+          :name="pokemon.name"
+        />
       </li>
     </ul>
   </article>
 </template>
 
 <script>
+import modalView from "./modalPokemon.vue";
+import favoriteStar from "./rate-star";
 export default {
+  components: {
+    modalView,
+    favoriteStar,
+  },
   data() {
-    return {
-      copiedText: `
-Name:  ${this.$store.state.modalData.name}
-Weight: ${this.$store.state.modalData.weight}
-Height: ${this.$store.state.modalData.height}
-types: ${this.copiedTypes}`,
-    };
+    return {};
   },
   computed: {
     ultimateFilter() {
@@ -119,20 +61,14 @@ types: ${this.copiedTypes}`,
   methods: {
     copyText() {
       navigator.clipboard.writeText(`
-Name:  ${this.$store.state.modalData.name}
-Weight: ${this.$store.state.modalData.weight}
-Height: ${this.$store.state.modalData.height}
-types: ${Array.from(this.$store.state.modalData.types)}`);
-
-      console.log(this.$store.state.copyAlert);
-      if (this.$store.state.copyAlert === null) {
-        setTimeout(() => {
-          return this.$store.state.copyAlert;
-        }, 500);
-      } else {
-        return !this.$store.state.copyAlert;
-      }
-      console.log(this.$store.state.copyAlert);
+Name:  ${this.$store.state.modalData.name} Weight: ${
+        this.$store.state.modalData.weight
+      } Height: ${this.$store.state.modalData.height} types: ${Array.from(
+        this.$store.state.modalData.types
+      )}`);
+      setTimeout(() => {
+        this.$store.state.copyAlert = true;
+      }, 1000);
     },
 
     fetchModal(urlName) {

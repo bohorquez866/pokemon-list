@@ -60,6 +60,7 @@
         & .share-button {
             position: relative;
             & .notification-copy {
+                border: none;
                 display: none;
                 position: absolute;
                 background-color: rgba(51, 48, 48, 0.274);

@@ -1,7 +1,7 @@
 <template>
   <article class="list--success">
     <ul>
-      <li v-for="(pokemon, index) in ultimateFilter" :key="index">
+      <li v-for="(pokemon, index) in ultimateFilter" :key="pokemon.id">
         <p @click="showModal(index, pokemon.id++)" class="pokemon-name">
           {{ pokemon.name }}
         </p>
@@ -104,16 +104,25 @@ types: ${Array.from(this.$store.state.modalData.types)}`);
       this.$store.state.isFavorite.includes(pokemonName)
         ? this.$store.state.isFavorite.pop(pokemonName)
         : this.$store.state.isFavorite.push(pokemonName);
+        console.log(this.$store.state.isFavorite);
     },
     filterFavoritePokemon() {
-      this.$store.state.pokemons.forEach((favoritePokemon) => {
+          this.$store.state.favoritePokemons = [];
+      this.$store.state.pokemons.forEach((favoritePokemon) => { 
+             console.log(this.$store.state.isFavorite.includes(favoritePokemon.name));
+
         if (this.$store.state.isFavorite.includes(favoritePokemon.name)) {
           this.$store.state.favoritePokemons.push(favoritePokemon);
         }
       });
     },
   },
-
+watch: {
+ultimateFilter(newVal, oldVal){
+  console.log(newVal);
+  console.log(oldVal);
+}
+},
   mounted() {
     this.filterFavoritePokemon();
   },
